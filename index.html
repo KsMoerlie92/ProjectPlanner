@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Project Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div>
+          <p class="eyebrow">PLAN · ALIGN · DELIVER</p>
+          <h1>Project planner</h1>
+          <p class="intro">Make the work, dependencies, and decisions behind your plan visible.</p>
+        </div>
+        <label class="project-name-label" for="project-name">Project name
+          <input id="project-name" maxlength="80" autocomplete="off">
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="summary" aria-label="Plan summary">
+        <div class="summary-card"><span class="summary-label">Project duration</span><strong id="project-duration">—</strong></div>
+        <div class="summary-card"><span class="summary-label">Steps</span><strong id="step-count">0</strong></div>
+        <div class="summary-card"><span class="summary-label">Critical steps</span><strong id="critical-count">0</strong></div>
+        <p class="summary-help">Critical steps have no schedule flexibility: a delay to one can delay the whole project.</p>
+      </section>
+
+      <section class="visualizations" aria-label="Project visualizations">
+        <article class="panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">WHEN</p><h2>Project timeline</h2></div>
+            <span class="legend"><i class="legend-swatch critical-swatch"></i>Critical path</span>
+          </div>
+          <div class="chart-scroll"><svg id="timeline" role="img" aria-label="Project timeline"></svg></div>
+        </article>
+        <article class="panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">WHAT DEPENDS ON WHAT</p><h2>Dependency map</h2></div>
+            <span class="legend"><i class="legend-swatch dependency-swatch"></i>Dependency</span>
+          </div>
+          <div class="chart-scroll"><svg id="dependency-map" role="img" aria-label="Project dependency map"></svg></div>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel editor-panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">BUILD YOUR PLAN</p><h2 id="form-heading">Add a step</h2></div>
+          </div>
+          <form id="task-form">
+            <input type="hidden" id="task-id">
+            <label for="task-title">Step name</label>
+            <input id="task-title" maxlength="100" required placeholder="e.g. Confirm project scope">
+
+            <div class="form-row">
+              <div>
+                <label for="task-duration">Duration (weeks)</label>
+                <input id="task-duration" type="number" min="1" max="520" step="1" value="1" required>
+              </div>
+              <div>
+                <label for="task-status">Status</label>
+                <select id="task-status">
+                  <option>Not started</option>
+                  <option>In progress</option>
+                  <option>Done</option>
+                </select>
+              </div>
+            </div>
+
+            <label for="task-dependencies">Prerequisite steps</label>
+            <select id="task-dependencies" multiple size="4" aria-describedby="dependency-help"></select>
+            <p class="field-help" id="dependency-help">Select every step that must finish first. Use Ctrl (Windows) or ⌘ (Mac) to select more than one.</p>
+
+            <label for="task-requirement">Requirements / inputs to obtain</label>
+            <textarea id="task-requirement" rows="2" maxlength="300" placeholder="Approvals, people, information, or materials needed"></textarea>
+
+            <label for="task-notes">Discussion / risks</label>
+            <textarea id="task-notes" rows="3" maxlength="500" placeholder="Open questions, decisions, or risks to discuss"></textarea>
+
+            <div class="form-actions">
+              <button class="button primary-button" type="submit" id="save-task">Add step</button>
+              <button class="button secondary-button" type="button" id="cancel-edit" hidden>Cancel edit</button>
+            </div>
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <section class="steps-panel" aria-labelledby="steps-heading">
+          <div class="panel-heading">
+            <div><p class="eyebrow">DETAILS & DISCUSSION</p><h2 id="steps-heading">Project steps</h2></div>
+            <button class="button text-button" id="reset-plan" type="button">Reset sample plan</button>
+          </div>
+          <div id="task-list" class="task-list"></div>
+        </section>
+      </section>
+      <p id="storage-message" class="storage-message" role="status"></p>
+    </main>
+  </body>
+</html>
